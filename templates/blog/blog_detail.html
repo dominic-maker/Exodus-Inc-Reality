@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} | Exodus Realty Inc{% endblock %}
+
+{% block content %}
+
+<section class="blog-detail-hero">
+    <div class="container">
+        <h1>{{ post.title }}</h1>
+        <p class="blog-meta">
+            Published on {{ post.published_date|date:"F d, Y" }}
+        </p>
+    </div>
+</section>
+
+<section class="blog-detail-content">
+    <div class="container blog-layout">
+
+        <article class="blog-main">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="blog-image">
+
+            <div class="blog-text">
+                {{ post.content|safe }}
+            </div>
+        </article>
+
+        <!-- Sidebar -->
+        <aside class="blog-sidebar">
+            <div class="sidebar-box">
+                <h3>Need Help Buying or Selling?</h3>
+                <p>
+                    Talk to Exodus Realty Inc today and get expert guidance
+                    tailored to your goals.
+                </p>
+                <a href="{% url 'contact' %}" class="cta-btn">
+                    Contact an Agent
+                </a>
+            </div>
+
+            <div class="sidebar-box">
+                <h3>Popular Topics</h3>
+                <ul>
+                    <li>Home Buying Tips</li>
+                    <li>Selling Your Home</li>
+                    <li>Market Trends</li>
+                    <li>Investment Advice</li>
+                </ul>
+            </div>
+        </aside>
+
+    </div>
+</section>
+
+{% endblock %}
