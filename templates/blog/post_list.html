@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} | Exodus Realty Inc{% endblock %}
+
+{% block content %}
+
+<h1>Blog</h1>
+
+<div class="blog-grid">
+  {% for post in object_list %}
+    {% with post.images.all|first as image %}
+      <article>
+        {% if image %}
+          <img src="{{ image.thumbnail.url }}" alt="{{ post.title }}">
+        {% endif %}
+
+        <h2>
+          <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </h2>
+
+        <p>{{ post.excerpt|truncatewords:25 }}</p>
+      </article>
+    {% endwith %}
+  {% endfor %}
+</div>
+{% endblock %}

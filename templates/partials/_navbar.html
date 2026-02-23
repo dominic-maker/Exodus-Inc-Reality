@@ -16,93 +16,134 @@
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <ul class="navbar-nav">
         <li
-{% if '/' == request.path %}
-class="nav-item mr-3 active"
-{% else %}
-class="nav-item mr-3"
-
-{% endif %}
-
+          {% if '/' == request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
         >
           <a class="nav-link" href="{% url 'index'%}">Home</a>
         </li>
-       <li
-        {% if 'about' in request.path %}
-        class="nav-item mr-3 active"
-        {% else %}
-        class="nav-item mr-3"
-
-        {% endif %}
-
-                >
+        
+        <li
+          {% if 'about' in request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
+        >
           <a class="nav-link" href="{% url 'about'%}">About</a>
-          <li
+        </li>
+        
+        <li
           {% if 'listings' in request.path %}
           class="nav-item mr-3 active"
           {% else %}
           class="nav-item mr-3"
-
           {% endif %}
-
-                  >
+        >
           <a class="nav-link" href="{% url 'listings'%}">Featured Listings</a>
+        </li>
+        
+        <!-- Blog Link - Always Visible -->
+        <li
+          {% if 'blog' in request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
+        >
+          <a class="nav-link" href="{% url 'blog:post_list'%}">
+            <i class="fas fa-blog"></i> Blog
+          </a>
         </li>
       </ul>
 
       <ul class="navbar-nav ml-auto">
         {% if not user.is_authenticated %}
-
-        <li {% if 'register' in request.path %}
-        class="nav-item mr-3 active"
-        {% else %}
-        class="nav-item mr-3"
-
-        {% endif %}>
+        
+        <li 
+          {% if 'register' in request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
+        >
           <a class="nav-link" href="{%url 'register'%}">
-            <i class="fas fa-user-plus"></i> Register</a
-          >
+            <i class="fas fa-user-plus"></i> Register
+          </a>
         </li>
-        <li class="nav-item mr-3"
-        {% if 'login' in request.path %}
-        class="nav-item mr-3 active"
-        {% else %}
-        class="nav-item mr-3"
-
-        {% endif %}
+        
+        <li 
+          {% if 'login' in request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
         >
           <a class="nav-link" href="{%url 'login'%}">
-            <i class="fas fa-sign-in-alt"></i>
-
-            Login</a
-          >
+            <i class="fas fa-sign-in-alt"></i> Login
+          </a>
         </li>
 
-        {%else%}
-        <li class="nav-item mr-3"
-        {% if 'dashboard' in request.path %}
-        class="nav-item mr-3 active"
         {% else %}
-        class="nav-item mr-3"
-
-        {% endif %}
+        
+        <!-- Authenticated User Menu -->
+        <li 
+          {% if 'dashboard' in request.path %}
+          class="nav-item mr-3 active"
+          {% else %}
+          class="nav-item mr-3"
+          {% endif %}
         >
           <a class="nav-link" href="{%url 'dashboard'%}">
-Welcome {{user.username}}
-
-            (Dashboard)</a
-          >
+            Welcome {{user.username}} (Dashboard)
+          </a>
         </li>
-            <li class="nav-item mr-3">
-              <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">   Logout</a>
+        
+        <!-- Blog Management Dropdown (Staff/Admin Only) -->
+        {% if user.is_staff or user.is_superuser %}
+        <li class="nav-item dropdown mr-3">
+          <a class="nav-link dropdown-toggle" href="#" id="blogDropdown" role="button" 
+             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-edit"></i> Manage Blog
+          </a>
+          <div class="dropdown-menu" aria-labelledby="blogDropdown">
+            <a class="dropdown-item" href="/admin/blog/post/add/">
+              <i class="fas fa-plus"></i> Create New Post
+            </a>
+            <a class="dropdown-item" href="/admin/blog/post/">
+              <i class="fas fa-list"></i> My Posts
+            </a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/admin/blog/category/">
+              <i class="fas fa-folder"></i> Manage Categories
+            </a>
+            <a class="dropdown-item" href="/admin/blog/comment/">
+              <i class="fas fa-comments"></i> Moderate Comments
+            </a>
+          </div>
+        </li>
+        {% endif %}
+        
+        <!-- Saved Posts (All Authenticated Users) -->
+        <li class="nav-item mr-3">
+          <a class="nav-link" href="{% url 'blog:saved_posts'%}">
+            <i class="fas fa-bookmark"></i> Saved Posts
+          </a>
+        </li>
+        
+        <li class="nav-item mr-3">
+          <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </a>
+          <form action="{%url 'logout'%}" method="post" id="logout">
+            {%csrf_token%}
+            <input type="hidden" name="">
+          </form>
+        </li>
 
-              <form action="{%url 'logout'%}" method="post" id="logout">
-                {%csrf_token%}
-                <input type="hidden" name="">
-              </form>
-
-           </li>
-
-        {%endif%}
+        {% endif %}
       </ul>
     </div>
   </div>

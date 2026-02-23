@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article>
+  <h1>{{ object.title }}</h1>
+
+  <div class="image-gallery">
+    {% for image in object.images.all %}
+      <img src="{{ image.image.url }}" alt="{{ object.title }}">
+    {% endfor %}
+  </div>
+
+  <div class="content">
+    {{ object.content|linebreaks }}
+  </div>
+</article>
+{% endblock %}
